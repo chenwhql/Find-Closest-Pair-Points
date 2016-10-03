@@ -36,6 +36,7 @@ struct Point
 ostream& operator << (ostream& out, const Point& p)
 {
 	out << "(" << p.x << "," << p.y << ")";
+	return out;
 }
 
 //计算两点间的距离
@@ -72,15 +73,15 @@ int get_median(vector<int>& A, int p, int r)
 	int last_group_member_num = n % 5;
 	int five_member_group_num = n / 5; //n个元素划分为（n/5）向上取整个组
 
-	for (int i = p; i < n / 5; i++)
+	for (int i = 0; i < n / 5; i++)
 	{
-		sort(A[p + i * 5], A[p + i * 5 + 4]);  //排序
+		sort(A.begin() + p + i * 5, A.begin() + p + i * 5 + 5);  //排序
 		median_set.push_back(A[p + i * 5 + 2]);
 	}
 	if (last_group_member_num != 0)
 	{
-		sort(A[n - last_group_member_num + 1], A[r]);
-		median_set.push_back(A[n - last_group_member_num + (last_group_member_num/2)]);
+		sort(A.begin() + n - last_group_member_num, A.end());
+		median_set.push_back(A[r - last_group_member_num + 1 + (last_group_member_num - 1)/2]);
 	}
 
 	//递归结束条件
@@ -131,11 +132,11 @@ int select(vector<int>& A, int p, int r, int i)
 	int k = q - p + 1;
 	if (i == k)
 	{
-		return A[i];
+		return A[p + i];
 	}
 	else if (i < k)
 	{
-		select(A, p, q-1, i);
+		select(A, p, q - 1, i);
 	}
 	else
 	{
@@ -174,20 +175,22 @@ int point_set_partition(vector<Point>& P, int p, int r, int m)
 //寻找最近点对函数
 double find_closest_pair_of_points(vector<Point>& P, int p, int r)
 {
+	double min_dis = 1000000.0;
+
 	if (r - p + 1 == 2)  //还剩2个点
 	{
-		double dis = calc_distance(P[p], P[r]);
-		if (dis < min_distance)
+		min_dis = calc_distance(P[p], P[r]);
+		if (min_dis < min_distance)
 		{
-			min_distance = dis;
+			min_distance = min_dis;
 			closest_pair_of_points.clear();
 			closest_pair_of_points.push_back(PointPair(P[p], P[r]));
 		}
-		else if (dis == min_distance)
+		else if (min_dis == min_distance)
 		{
 			closest_pair_of_points.push_back(PointPair(P[p], P[r]));
 		}
-		return dis;
+		return min_dis;
 	}
 	else if (r - p + 1 == 3) //还剩3个点
 	{
@@ -227,28 +230,30 @@ double find_closest_pair_of_points(vector<Point>& P, int p, int r)
 				closest_pair_of_points.push_back(PointPair(P[p], P[r]));
 			}
 		}
+
+		return min_dis;
 	}
 	else  //还剩不止3个点
 	{
 		//提取点集的x坐标集
 		vector<int> point_x;
-		for (int i = 0; i < P.size(); ++i)
+		for (unsigned int i = p; i <= r; ++i)
 		{
 			point_x.push_back(P[i].x);
 		}
 		//获取划分点集的轴
-		int x_median = select(point_x, 0, point_x.size(), point_x.size()/2);
+		int x_median = select(point_x, 0, point_x.size()-1, (point_x.size()-1)/2);
 		int divide_x = point_set_partition(P, p, r, x_median);
 		//递归求解两边的最短距离
 		double min_dis_left = find_closest_pair_of_points(P, p, divide_x);
 		double min_dis_right = find_closest_pair_of_points(P, divide_x + 1, r);
-		double min_x = min(min_dis_left, min_dis_right);
+		min_dis = min(min_dis_left, min_dis_right);
 		//这里是否再需要更新min_distance的值？
 		//将以轴为中心左右min_x范围内的点提取出来
 		vector<Point> point_set_middle;
-		for (int i = p; i <= divide_x; ++i)
+		for (int i = p; i <= r; ++i)
 		{
-			if (abs(P[i].x - divide_x) <= min_x)
+			if (abs(P[i].x - x_median) <= min_dis)
 			{
 				point_set_middle.push_back(P[i]);
 			}
@@ -256,11 +261,34 @@ double find_closest_pair_of_points(vector<Point>& P, int p, int r)
 		//将这些点按Y轴大小排序
 		sort(point_set_middle.begin(), point_set_middle.end(), Point::cmp_by_y);
 		//每一个点与其后的7个点相比
-		for (int i = 0; i < point_set_middle.size(); i++)
+		for (int i = 0; i < point_set_middle.size(); ++i)
 		{
-			if ()
+			for (int j = i + 1; j <= ((i + 7) < point_set_middle.size() ? (i + 7) : point_set_middle.size()-1); ++j)
+			{
+				if ((point_set_middle[i].x <= x_median && point_set_middle[j].x > x_median) ||
+					(point_set_middle[i].x > x_median && point_set_middle[j].x <= x_median))
+				{
+					double min_new = calc_distance(point_set_middle[i], point_set_middle[j]);
+					if (min_new < min_dis)
+					{
+						min_dis = min_new;
+					}
+					if (min_new < min_distance)
+					{
+						min_distance = min_new;
+						closest_pair_of_points.clear();
+						closest_pair_of_points.push_back(PointPair(point_set_middle[i], point_set_middle[j]));
+					}
+					else if (min_new == min_distance)
+					{
+						closest_pair_of_points.push_back(PointPair(point_set_middle[i], point_set_middle[j]));
+					}
+				}
+			}
 		}
 	}
+
+	return min_dis;
 }
 
 int main()
@@ -268,13 +296,28 @@ int main()
 #ifdef LOCAL
 	freopen("in.txt","r",stdin);
 #endif
-
+	int a, b;
 
 	//初始化随机数种子 
-	srand(time(NULL));
+	//srand(time(NULL));
 
-	//
+	//input
+	while (scanf("%d %d", &a, &b) == 2)
+	{
+		point_set.push_back(Point(a, b));
+	}
 
+	//计算
+	double closest_distance = find_closest_pair_of_points(point_set, 0, point_set.size()-1);
+	//输出计算时间
+	printf("Time used = %.2f\n", (double)clock()/CLOCKS_PER_SEC);
+	//输出结果
+	cout << "the distancce: " << min_distance << endl;
+	cout << "the closest pair of points:" << endl;
+	for (vector<PointPair>::iterator it = closest_pair_of_points.begin(); it != closest_pair_of_points.end(); ++it)
+	{
+		cout << it->A << " and " << it->B << endl;
+	}
 
 	return 0;
 }
