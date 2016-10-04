@@ -294,9 +294,10 @@ double find_closest_pair_of_points(vector<Point>& P, int p, int r)
 int main()
 {
 #ifdef LOCAL
-	freopen("in.txt","r",stdin);
+	freopen("in_less_1000.txt","r",stdin);
 #endif
 	int a, b;
+	double t_start = 0.0, t_end = 0.0;
 
 	//初始化随机数种子 
 	//srand(time(NULL));
@@ -307,10 +308,14 @@ int main()
 		point_set.push_back(Point(a, b));
 	}
 
+	//记录开始时间
+	t_start = (double)clock() / CLOCKS_PER_SEC;
 	//计算
 	double closest_distance = find_closest_pair_of_points(point_set, 0, point_set.size()-1);
+	//记录结束时间
+	t_end = (double)clock() / CLOCKS_PER_SEC;
 	//输出计算时间
-	printf("Time used = %.2f\n", (double)clock()/CLOCKS_PER_SEC);
+	printf("Calc Time used = %.2f\n", t_end - t_start);
 	//输出结果
 	cout << "the distancce: " << min_distance << endl;
 	cout << "the closest pair of points:" << endl;
