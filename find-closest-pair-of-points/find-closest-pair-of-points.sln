@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "find-closest-pair-of-points", "find-closest-pair-of-points\find-closest-pair-of-points.vcxproj", "{71E50F0C-5DB8-4BAD-9016-93280314305D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Finding-Closest-Pair-of-Points", "Finding-Closest-Pair-of-Points\Finding-Closest-Pair-of-Points.vcxproj", "{6E228B32-56FA-4058-9757-9284F8FD1C57}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -15,6 +17,10 @@ Global
 		{71E50F0C-5DB8-4BAD-9016-93280314305D}.Debug|Win32.Build.0 = Debug|Win32
 		{71E50F0C-5DB8-4BAD-9016-93280314305D}.Release|Win32.ActiveCfg = Release|Win32
 		{71E50F0C-5DB8-4BAD-9016-93280314305D}.Release|Win32.Build.0 = Release|Win32
+		{6E228B32-56FA-4058-9757-9284F8FD1C57}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6E228B32-56FA-4058-9757-9284F8FD1C57}.Debug|Win32.Build.0 = Debug|Win32
+		{6E228B32-56FA-4058-9757-9284F8FD1C57}.Release|Win32.ActiveCfg = Release|Win32
+		{6E228B32-56FA-4058-9757-9284F8FD1C57}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

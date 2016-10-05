@@ -177,7 +177,11 @@ double find_closest_pair_of_points(vector<Point>& P, int p, int r)
 {
 	double min_dis = 1000000.0;
 
-	if (r - p + 1 == 2)  //还剩2个点
+	if (r - p + 1 < 2)
+	{
+		return min_dis;
+	}
+	else if (r - p + 1 == 2)  //还剩2个点
 	{
 		min_dis = calc_distance(P[p], P[r]);
 		if (min_dis < min_distance)
@@ -245,7 +249,7 @@ double find_closest_pair_of_points(vector<Point>& P, int p, int r)
 		int x_median = select(point_x, 0, point_x.size()-1, (point_x.size()-1)/2);
 		int divide_x = point_set_partition(P, p, r, x_median);  //有多个x坐标相等的点，并且与divide_x相等，造成了死循环
 		//递归求解两边的最短距离
-		double min_dis_left = find_closest_pair_of_points(P, p, divide_x);
+		double min_dis_left = find_closest_pair_of_points(P, p, divide_x - 1);
 		double min_dis_right = find_closest_pair_of_points(P, divide_x + 1, r);
 		min_dis = min(min_dis_left, min_dis_right);
 		//这里是否再需要更新min_distance的值？
@@ -266,7 +270,8 @@ double find_closest_pair_of_points(vector<Point>& P, int p, int r)
 			for (int j = i + 1; j <= ((i + 7) < point_set_middle.size() ? (i + 7) : point_set_middle.size()-1); ++j)
 			{
 				if ((point_set_middle[i].x < x_median && point_set_middle[j].x > x_median) ||
-					(point_set_middle[i].x > x_median && point_set_middle[j].x < x_median))
+					(point_set_middle[i].x > x_median && point_set_middle[j].x < x_median) ||
+					point_set_middle[i].x == x_median)
 				{
 					double min_new = calc_distance(point_set_middle[i], point_set_middle[j]);
 					if (min_new < min_dis)
@@ -294,7 +299,7 @@ double find_closest_pair_of_points(vector<Point>& P, int p, int r)
 int main()
 {
 #ifdef LOCAL
-	freopen("in.txt","r",stdin);
+	freopen("in_500_000.txt","r",stdin);
 #endif
 	int a, b;
 	double t_start = 0.0, t_end = 0.0;

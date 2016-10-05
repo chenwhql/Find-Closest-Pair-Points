@@ -1,0 +1,26 @@
+﻿生成启动时间为 周三 2016 10 5 0:06:57。
+     1>项目“F:\GitHub\Find-closest-pair-of-points\find-closest-pair-of-points\Finding-Closest-Pair-of-Points\Finding-Closest-Pair-of-Points.vcxproj”在节点 2 上(Build 个目标)。
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"Debug\Finding-Closest-Pair-of-Points.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp
+         stdafx.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\Finding-Closest-Pair-of-Points.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt "Finding-Closest-Pair-of-Points.cpp" "Finding-Closest-Pair-of-PointsDoc.cpp" "Finding-Closest-Pair-of-PointsView.cpp" MainFrm.cpp
+         MainFrm.cpp
+         Finding-Closest-Pair-of-PointsView.cpp
+         Finding-Closest-Pair-of-PointsDoc.cpp
+         Finding-Closest-Pair-of-Points.cpp
+         正在生成代码...
+       ResourceCompile:
+         C:\Program Files (x86)\Windows Kits\8.1\bin\x86\rc.exe /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /l"0x0804" /IDebug\ /nologo /fo"Debug\Finding-Closest-Pair-of-Points.res" Finding-Closest-Pair-of-Points.rc 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"F:\GitHub\Find-closest-pair-of-points\find-closest-pair-of-points\Debug\Finding-Closest-Pair-of-Points.exe" /INCREMENTAL /NOLOGO /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /manifestinput:"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\Include\Manifest\dpiaware.manifest" /DEBUG /PDB:"F:\GitHub\Find-closest-pair-of-points\find-closest-pair-of-points\Debug\Finding-Closest-Pair-of-Points.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"wWinMainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:\GitHub\Find-closest-pair-of-points\find-closest-pair-of-points\Debug\Finding-Closest-Pair-of-Points.lib" /MACHINE:X86 "Debug\Finding-Closest-Pair-of-Points.res"
+         "Debug\Finding-Closest-Pair-of-Points.obj"
+         "Debug\Finding-Closest-Pair-of-PointsDoc.obj"
+         "Debug\Finding-Closest-Pair-of-PointsView.obj"
+         Debug\MainFrm.obj
+         Debug\stdafx.obj
+         Finding-Closest-Pair-of-Points.vcxproj -> F:\GitHub\Find-closest-pair-of-points\find-closest-pair-of-points\Debug\Finding-Closest-Pair-of-Points.exe
+     1>已完成生成项目“F:\GitHub\Find-closest-pair-of-points\find-closest-pair-of-points\Finding-Closest-Pair-of-Points\Finding-Closest-Pair-of-Points.vcxproj”(Build 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:05.90

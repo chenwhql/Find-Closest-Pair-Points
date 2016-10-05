@@ -3,12 +3,12 @@
 #include<ctime>
 using namespace std;
 
-#define CNT 1000
+#define CNT 500000
 
 int main()
 {
 	FILE *fout;
-	fout = fopen("in_less_1000.txt", "wb");
+	fout = fopen("in_500_000.txt", "wb");
 	srand(time(NULL));
 	for (int i = 0; i < CNT; i++)
 	{
