@@ -77,6 +77,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	CenterWindow(NULL);
 
+	//随机数种子初始化
+	srand(time(NULL));
+
 	return 0;
 }
 

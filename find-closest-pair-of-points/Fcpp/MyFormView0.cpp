@@ -36,6 +36,7 @@ void CMyFormView0::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CMyFormView0, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON1, &CMyFormView0::OnBnClickedButton1)
 //	ON_WM_GETMINMAXINFO()
+ON_BN_CLICKED(IDC_BUTTON2, &CMyFormView0::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 
@@ -97,3 +98,23 @@ void CMyFormView0::OnBnClickedButton1()
 	SetDlgItemText(IDC_EDIT1, str);
 }
 
+
+
+void CMyFormView0::OnBnClickedButton2()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	//将原来的数据清0
+	cnt = 0;
+	//获取当前视图的大小
+	CRect rc;
+	CMainFrame* pAppFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+	CFcppView *pView = (CFcppView *)pAppFrame->m_splitter.GetPane(0, 0);
+	pView->GetClientRect(&rc);
+	//随机生成100万个点
+	int a = 0, b = 0;
+	for (int i = 0; i < 1000000; i++)
+	{
+		a = rand() % (rc.)
+		point_set[]
+	}
+}
