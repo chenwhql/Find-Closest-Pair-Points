@@ -7,6 +7,7 @@
 using namespace std;
 
 #define LOCAL
+#define ARRAY_MAX_SIZE (1000000+10)
 
 /****************Point******************/
 //point struct
@@ -23,13 +24,12 @@ struct Point
 		return *this;
 	}
 
-	static bool cmp_by_x(const Point& p1, const Point& p2)
+	bool operator == (const Point& b) const
 	{
-		return p1.x < p2.x;
-	}
-	static bool cmp_by_y(const Point& p1, const Point& p2)
-	{
-		return p1.y < p2.y;
+		if (this->x == b.x && this->y == b.y)
+			return true;
+		else
+			return false;
 	}
 };
 
@@ -56,20 +56,36 @@ struct PointPair
 
 	PointPair(Point A, Point B) :A(A), B(B){};
 
+	bool operator == (PointPair& X) const
+	{
+		if ((this->A == X.A && this->B == X.B) ||
+			(this->A == X.B && this->B == X.A))
+			return true;
+		else
+			return false;
+	}
+
 };
 /**************************************/
 
-vector<Point> point_set;  //存放输入的点集
-vector<int> point_x;  //存放输入的x坐标
+Point point_set[ARRAY_MAX_SIZE];  //存放输入的点集
+int point_x[ARRAY_MAX_SIZE];  //存放输入的x坐标
 vector<PointPair> closest_pair_of_points;  //存放寻找的结果
 double min_distance = 100000;  //存放最短距离
 
-/*************找出划分点集的轴*****************/
-
-/*********************************************/
+/***********对比函数，辅助qsort****************/
+int cmp_int(const void * a, const void * b)
+{
+	return (*(int*)a - *(int*)b);
+}
+int cmp_point_y(const void * a, const void * b)
+{
+	return ((*(Point*)a).y - (*(Point*)b).y);
+}
+/*******************************************/
 
 /***************点集划分函数********************/
-int point_set_partition(vector<Point>& P, int p, int r, int m)
+int point_set_partition(Point* P, int p, int r, int m)
 {
 	//找出x坐标中位数对应的点的位置,并与最后一个点交换
 	for (int i = p; i <= r; ++i)
@@ -96,7 +112,7 @@ int point_set_partition(vector<Point>& P, int p, int r, int m)
 /*********************************************/
 
 //寻找最近点对函数
-double find_closest_pair_of_points(vector<Point>& P, int p, int r)
+double find_closest_pair_of_points(Point* P, int p, int r)
 {
 	double min_dis = 1000000.0;
 
@@ -165,30 +181,32 @@ double find_closest_pair_of_points(vector<Point>& P, int p, int r)
 		//获取划分点集的轴
 		int x_median = point_x[p + (r - p) / 2];
 		int divide_x = point_set_partition(P, p, r, x_median);
+		if (divide_x == r || divide_x == p) return min_dis;
 		//递归求解两边的最短距离
-		double min_dis_left = find_closest_pair_of_points(P, p, divide_x - 1);
+		double min_dis_left = find_closest_pair_of_points(P, p, divide_x);
 		double min_dis_right = find_closest_pair_of_points(P, divide_x + 1, r);
 		min_dis = min(min_dis_left, min_dis_right);
 		//这里是否再需要更新min_distance的值？
 		//将以轴为中心左右min_x范围内的点提取出来
-		vector<Point> point_set_middle;
+		Point* point_set_middle = new Point[r-p+1];
+		int cnt = 0;
 		for (int i = p; i <= r; ++i)
 		{
 			if (abs(P[i].x - x_median) <= min_dis)
 			{
-				point_set_middle.push_back(P[i]);
+				point_set_middle[cnt++] = P[i];
 			}
 		}
 		//将这些点按Y轴大小排序
-		sort(point_set_middle.begin(), point_set_middle.end(), Point::cmp_by_y);
+		qsort(point_set_middle, cnt, sizeof(Point), cmp_point_y);
 		//每一个点与其后的7个点相比
-		for (int i = 0; i < point_set_middle.size(); ++i)
+		for (int i = 0; i < cnt; ++i)
 		{
-			for (int j = i + 1; j <= ((i + 7) < point_set_middle.size() ? (i + 7) : point_set_middle.size() - 1); ++j)
+			for (int j = i + 1; j <= ((i + 7) < cnt ? (i + 7) : cnt - 1); ++j)
 			{
 				//如果纵向间距已经大于min_dis，可以结束该轮比较
-		/*		if (abs(point_set_middle[j].x - point_set_middle[i].x) > min_dis)
-					break;*/
+				if (abs(point_set_middle[j].y - point_set_middle[i].y) > min_dis)
+					break;
 				//注意轴上的点划分
 				if ((point_set_middle[i].x < x_median && point_set_middle[j].x > x_median) ||
 					(point_set_middle[i].x > x_median && point_set_middle[j].x < x_median) ||
@@ -220,9 +238,10 @@ double find_closest_pair_of_points(vector<Point>& P, int p, int r)
 int main()
 {
 #ifdef LOCAL
-	freopen("in_500_000.txt", "r", stdin);
+	freopen("in_1_000_000.txt", "r", stdin);
+	freopen("out.txt", "w", stdout);
 #endif
-	int a, b;
+	int a, b, cnt = 0;
 	double t_start = 0.0, t_end = 0.0;
 
 	//初始化随机数种子 
@@ -231,15 +250,15 @@ int main()
 	//input
 	while (scanf("%d %d", &a, &b) == 2)
 	{
-		point_x.push_back(a);
-		point_set.push_back(Point(a, b));
+		point_x[cnt] = a;
+		point_set[cnt++] = Point(a, b);
 	}
 
 	//记录开始时间
 	t_start = (double)clock() / CLOCKS_PER_SEC;
 	//计算
-	sort(point_x.begin(), point_x.end());
-	double closest_distance = find_closest_pair_of_points(point_set, 0, point_set.size() - 1);
+	qsort(point_x, cnt, sizeof(int), cmp_int);
+	double closest_distance = find_closest_pair_of_points(point_set, 0, cnt - 1);
 	//记录结束时间
 	t_end = (double)clock() / CLOCKS_PER_SEC;
 	//输出计算时间
