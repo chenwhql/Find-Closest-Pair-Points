@@ -1,13 +1,17 @@
-﻿生成启动时间为 周四 2016 10 6 11:02:48。
-     1>项目“F:\GitHub\Find-closest-pair-of-points\find-closest-pair-of-points\find-closest-pair-of-points\find-closest-pair-of-points.vcxproj”在节点 2 上(Build 个目标)。
+﻿生成启动时间为 周四 2016 10 6 22:18:15。
+     1>项目“E:\GitHub\Find-closest-pair-of-points\find-closest-pair-of-points\find-closest-pair-of-points\find-closest-pair-of-points.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _CRT_SECURE_NO_WARNINGS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
          main.cpp
+     1>e:\github\find-closest-pair-of-points\find-closest-pair-of-points\find-closest-pair-of-points\main.cpp(97): warning C4305: “初始化”: 从“__int64”到“int”截断
+     1>e:\github\find-closest-pair-of-points\find-closest-pair-of-points\find-closest-pair-of-points\main.cpp(97): warning C4309: “初始化”: 截断常量值
+     1>e:\github\find-closest-pair-of-points\find-closest-pair-of-points\find-closest-pair-of-points\main.cpp(140): warning C4305: “初始化”: 从“__int64”到“int”截断
+     1>e:\github\find-closest-pair-of-points\find-closest-pair-of-points\find-closest-pair-of-points\main.cpp(140): warning C4309: “初始化”: 截断常量值
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"F:\GitHub\Find-closest-pair-of-points\find-closest-pair-of-points\Debug\find-closest-pair-of-points.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"F:\GitHub\Find-closest-pair-of-points\find-closest-pair-of-points\Debug\find-closest-pair-of-points.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:\GitHub\Find-closest-pair-of-points\find-closest-pair-of-points\Debug\find-closest-pair-of-points.lib" /MACHINE:X86 Debug\main.obj
-         find-closest-pair-of-points.vcxproj -> F:\GitHub\Find-closest-pair-of-points\find-closest-pair-of-points\Debug\find-closest-pair-of-points.exe
-     1>已完成生成项目“F:\GitHub\Find-closest-pair-of-points\find-closest-pair-of-points\find-closest-pair-of-points\find-closest-pair-of-points.vcxproj”(Build 个目标)的操作。
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\GitHub\Find-closest-pair-of-points\find-closest-pair-of-points\Debug\find-closest-pair-of-points.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:\GitHub\Find-closest-pair-of-points\find-closest-pair-of-points\Debug\find-closest-pair-of-points.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\GitHub\Find-closest-pair-of-points\find-closest-pair-of-points\Debug\find-closest-pair-of-points.lib" /MACHINE:X86 Debug\main.obj
+         find-closest-pair-of-points.vcxproj -> E:\GitHub\Find-closest-pair-of-points\find-closest-pair-of-points\Debug\find-closest-pair-of-points.exe
+     1>已完成生成项目“E:\GitHub\Find-closest-pair-of-points\find-closest-pair-of-points\find-closest-pair-of-points\find-closest-pair-of-points.vcxproj”(Build 个目标)的操作。
 
 生成成功。
 
-已用时间 00:00:00.90
+已用时间 00:00:00.65

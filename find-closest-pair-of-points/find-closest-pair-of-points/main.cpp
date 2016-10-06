@@ -2,7 +2,8 @@
 #include<ctime>
 #include<cstdlib>
 #include<iostream>
-#include<vector>
+//#include<vector>
+#include<set>
 #include<algorithm>
 using namespace std;
 
@@ -31,6 +32,13 @@ struct Point
 		else
 			return false;
 	}
+
+	bool operator < (const Point& b) const
+	{
+		if (this->x == b.x)
+			return this->y < b.y;
+		return this->x < b.x;
+	}
 };
 
 ostream& operator << (ostream& out, const Point& p)
@@ -39,12 +47,12 @@ ostream& operator << (ostream& out, const Point& p)
 	return out;
 }
 
-//计算两点间的距离
-double calc_distance(const Point& p1, const Point& p2)
+//计算两点间的距离的平方
+int calc_distance_square(const Point& p1, const Point& p2)
 {
 	int x = abs(p2.x - p1.x);
 	int y = abs(p2.y - p1.y);
-	return sqrt((double)(x*x + y*y));
+	return (x*x + y*y);
 }
 /******************************************/
 
@@ -54,7 +62,14 @@ struct PointPair
 	Point A;
 	Point B;
 
-	PointPair(Point A, Point B) :A(A), B(B){};
+	PointPair(Point A, Point B) :A(A), B(B)
+	{
+		//让较小的点在前面
+		if (this->B < this->A)
+		{
+			swap(this->A, this->B);
+		}
+	}
 
 	bool operator == (PointPair& X) const
 	{
@@ -65,13 +80,21 @@ struct PointPair
 			return false;
 	}
 
+	bool operator < (const PointPair& X) const
+	{
+		if (this->A == X.A)
+			return this->B < X.B;
+		return this->A < X.A;
+	}
+
 };
 /**************************************/
 
+set<Point> point_set_init;  //过滤掉重复的点
 Point point_set[ARRAY_MAX_SIZE];  //存放输入的点集
 int point_x[ARRAY_MAX_SIZE];  //存放输入的x坐标
-vector<PointPair> closest_pair_of_points;  //存放寻找的结果
-double min_distance = 100000;  //存放最短距离
+set<PointPair> closest_pair_of_points;  //存放寻找的结果
+int min_distance_square = 10000000000;  //存放最短距离的平方，减少运算量
 
 /***********对比函数，辅助qsort****************/
 int cmp_int(const void * a, const void * b)
@@ -112,87 +135,87 @@ int point_set_partition(Point* P, int p, int r, int m)
 /*********************************************/
 
 //寻找最近点对函数
-double find_closest_pair_of_points(Point* P, int p, int r)
+int find_closest_pair_of_points(Point* P, int p, int r)
 {
-	double min_dis = 1000000.0;
+	int min_dis_square = 10000000000;
 
 	if (r - p + 1 < 2)
 	{
-		return min_dis;
+		return min_dis_square;
 	}
 	else if (r - p + 1 == 2)  //还剩2个点
 	{
-		min_dis = calc_distance(P[p], P[r]);
-		if (min_dis < min_distance)
+		min_dis_square = calc_distance_square(P[p], P[r]);
+		if (min_dis_square < min_distance_square)
 		{
-			min_distance = min_dis;
+			min_distance_square = min_dis_square;
 			closest_pair_of_points.clear();
-			closest_pair_of_points.push_back(PointPair(P[p], P[r]));
+			closest_pair_of_points.insert(PointPair(P[p], P[r]));
 		}
-		else if (min_dis == min_distance)
+		else if (min_dis_square == min_distance_square)
 		{
-			closest_pair_of_points.push_back(PointPair(P[p], P[r]));
+			closest_pair_of_points.insert(PointPair(P[p], P[r]));
 		}
-		return min_dis;
+		return min_dis_square;
 	}
 	else if (r - p + 1 == 3) //还剩3个点
 	{
-		double dis1 = calc_distance(P[p], P[p + 1]);
-		double dis2 = calc_distance(P[p + 1], P[r]);
-		double dis3 = calc_distance(P[p], P[r]);
-		double min_dis = min(min(dis1, dis2), dis3);  //注意着三个距离值可能相等
-		if (min_dis < min_distance)
+		int dis1 = calc_distance_square(P[p], P[p + 1]);
+		int dis2 = calc_distance_square(P[p + 1], P[r]);
+		int dis3 = calc_distance_square(P[p], P[r]);
+		min_dis_square = min(min(dis1, dis2), dis3);  //注意着三个距离值可能相等
+		if (min_dis_square < min_distance_square)
 		{
-			min_distance = min_dis;
+			min_distance_square = min_dis_square;
 			closest_pair_of_points.clear();
-			if (dis1 == min_dis)
+			if (dis1 == min_dis_square)
 			{
-				closest_pair_of_points.push_back(PointPair(P[p], P[p + 1]));
+				closest_pair_of_points.insert(PointPair(P[p], P[p + 1]));
 			}
-			else if (dis2 == min_dis)
+			else if (dis2 == min_dis_square)
 			{
-				closest_pair_of_points.push_back(PointPair(P[p + 1], P[r]));
+				closest_pair_of_points.insert(PointPair(P[p + 1], P[r]));
 			}
 			else
 			{
-				closest_pair_of_points.push_back(PointPair(P[p], P[r]));
+				closest_pair_of_points.insert(PointPair(P[p], P[r]));
 			}
 		}
-		else if (min_dis == min_distance)
+		else if (min_dis_square == min_distance_square)
 		{
-			if (dis1 == min_dis)
+			if (dis1 == min_dis_square)
 			{
-				closest_pair_of_points.push_back(PointPair(P[p], P[p + 1]));
+				closest_pair_of_points.insert(PointPair(P[p], P[p + 1]));
 			}
-			else if (dis2 == min_dis)
+			else if (dis2 == min_dis_square)
 			{
-				closest_pair_of_points.push_back(PointPair(P[p + 1], P[r]));
+				closest_pair_of_points.insert(PointPair(P[p + 1], P[r]));
 			}
 			else
 			{
-				closest_pair_of_points.push_back(PointPair(P[p], P[r]));
+				closest_pair_of_points.insert(PointPair(P[p], P[r]));
 			}
 		}
 
-		return min_dis;
+		return min_dis_square;
 	}
 	else  //还剩不止3个点
 	{
 		//获取划分点集的轴
 		int x_median = point_x[p + (r - p) / 2];
 		int divide_x = point_set_partition(P, p, r, x_median);
-		if (divide_x == r || divide_x == p) return min_dis;
+		if (divide_x == r || divide_x == p) return min_dis_square;
 		//递归求解两边的最短距离
-		double min_dis_left = find_closest_pair_of_points(P, p, divide_x);
-		double min_dis_right = find_closest_pair_of_points(P, divide_x + 1, r);
-		min_dis = min(min_dis_left, min_dis_right);
-		//这里是否再需要更新min_distance的值？
+		int min_dis_square_left = find_closest_pair_of_points(P, p, divide_x);
+		int min_dis_square_right = find_closest_pair_of_points(P, divide_x + 1, r);
+		min_dis_square = min(min_dis_square_left, min_dis_square_right);
+		//这里是否再需要更新min_distance_square的值？
 		//将以轴为中心左右min_x范围内的点提取出来
 		Point* point_set_middle = new Point[r-p+1];
 		int cnt = 0;
 		for (int i = p; i <= r; ++i)
 		{
-			if (abs(P[i].x - x_median) <= min_dis)
+			if (abs(P[i].x - x_median) <= min_dis_square)
 			{
 				point_set_middle[cnt++] = P[i];
 			}
@@ -204,35 +227,35 @@ double find_closest_pair_of_points(Point* P, int p, int r)
 		{
 			for (int j = i + 1; j <= ((i + 7) < cnt ? (i + 7) : cnt - 1); ++j)
 			{
-				//如果纵向间距已经大于min_dis，可以结束该轮比较
-				if (abs(point_set_middle[j].y - point_set_middle[i].y) > min_dis)
+				//如果纵向间距已经大于min_dis_square，可以结束该轮比较
+				if (abs(point_set_middle[j].y - point_set_middle[i].y) > min_dis_square)
 					break;
 				//注意轴上的点划分
 				if ((point_set_middle[i].x < x_median && point_set_middle[j].x > x_median) ||
 					(point_set_middle[i].x > x_median && point_set_middle[j].x < x_median) ||
 					point_set_middle[i].x == x_median)
 				{
-					double min_new = calc_distance(point_set_middle[i], point_set_middle[j]);
-					if (min_new < min_dis)
+					int min_new = calc_distance_square(point_set_middle[i], point_set_middle[j]);
+					if (min_new < min_dis_square)
 					{
-						min_dis = min_new;
+						min_dis_square = min_new;
 					}
-					if (min_new < min_distance)
+					if (min_new < min_distance_square)
 					{
-						min_distance = min_new;
+						min_distance_square = min_new;
 						closest_pair_of_points.clear();
-						closest_pair_of_points.push_back(PointPair(point_set_middle[i], point_set_middle[j]));
+						closest_pair_of_points.insert(PointPair(point_set_middle[i], point_set_middle[j]));
 					}
-					else if (min_new == min_distance)
+					else if (min_new == min_distance_square)
 					{
-						closest_pair_of_points.push_back(PointPair(point_set_middle[i], point_set_middle[j]));
+						closest_pair_of_points.insert(PointPair(point_set_middle[i], point_set_middle[j]));
 					}
 				}
 			}
 		}
 	}
 
-	return min_dis;
+	return min_dis_square;
 }
 
 int main()
@@ -250,23 +273,28 @@ int main()
 	//input
 	while (scanf("%d %d", &a, &b) == 2)
 	{
-		point_x[cnt] = a;
-		point_set[cnt++] = Point(a, b);
+		point_set_init.insert(Point(a,b));
 	}
+
+	for (set<Point>::iterator it = point_set_init.begin(); it != point_set_init.end(); ++it)
+	{
+		point_x[cnt] = it->x;
+		point_set[cnt++] = *it;
+	}	
 
 	//记录开始时间
 	t_start = (double)clock() / CLOCKS_PER_SEC;
-	//计算
-	qsort(point_x, cnt, sizeof(int), cmp_int);
-	double closest_distance = find_closest_pair_of_points(point_set, 0, cnt - 1);
+	//计算,set在插入的时候已经是有序的
+	//qsort(point_x, cnt, sizeof(int), cmp_int);
+	int closest_distance_square = find_closest_pair_of_points(point_set, 0, cnt - 1);
 	//记录结束时间
 	t_end = (double)clock() / CLOCKS_PER_SEC;
 	//输出计算时间
 	printf("Calc Time used = %.2f\n", t_end - t_start);
 	//输出结果
-	cout << "the distancce: " << min_distance << endl;
+	cout << "the distancce: " << sqrt((double)closest_distance_square) << endl;
 	cout << "the closest pair of points:" << endl;
-	for (vector<PointPair>::iterator it = closest_pair_of_points.begin(); it != closest_pair_of_points.end(); ++it)
+	for (set<PointPair>::iterator it = closest_pair_of_points.begin(); it != closest_pair_of_points.end(); ++it)
 	{
 		cout << it->A << " and " << it->B << endl;
 	}
