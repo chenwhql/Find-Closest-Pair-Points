@@ -118,13 +118,17 @@ void CMainFrame::Dump(CDumpContext& dc) const
 BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 {
 	// TODO:  在此添加专用代码和/或调用基类
+	CRect rc;
+	GetClientRect(&rc);
 	//创建一个静态分栏窗口，分为一行二列 
 	if (m_splitter.CreateStatic(this, 1, 2) == NULL)
 		return FALSE;
 
 	//将CCSplitterWndView连接到0行0列窗格上
-	m_splitter.CreateView(0, 0, RUNTIME_CLASS(CFcppView), CSize(600, 600), pContext);
-	m_splitter.CreateView(0, 1, RUNTIME_CLASS(CMyFormView0), CSize(200, 600), pContext);
+	m_splitter.CreateView(0, 0, RUNTIME_CLASS(CFcppView), 
+		CSize((rc.right-rc.left)+100, rc.top-rc.bottom), pContext);
+	m_splitter.CreateView(0, 1, RUNTIME_CLASS(CMyFormView0), 
+		CSize(200, rc.top - rc.bottom), pContext);
 
 	return true;
 }
